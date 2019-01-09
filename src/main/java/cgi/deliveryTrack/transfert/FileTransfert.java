@@ -12,6 +12,7 @@ import cgi.deliveryTrack.bean.Action;
 import cgi.deliveryTrack.bean.Response;
 import cgi.deliveryTrack.enumeration.ApiEnum;
 import cgi.deliveryTrack.enumeration.StatusEnum;
+import cgi.deliveryTrack.exception.DeliveryTrackException;
 
 public class FileTransfert {
 	
@@ -72,7 +73,7 @@ public class FileTransfert {
 	}
 	
     
-	public void cancelDelivery(Action actionToDelete) {
+	public void cancelDelivery(Action actionToDelete) throws DeliveryTrackException {
 		File fileDest = new File(actionToDelete.getPathDest() + actionToDelete.getFileNewName());
 		File fileOrigin = new File(actionToDelete.getPathOrigin() + actionToDelete.getFileName());
 		
@@ -81,7 +82,7 @@ public class FileTransfert {
 		    bos = new BufferedOutputStream(new FileOutputStream(fileOrigin));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new DeliveryTrackException("Le fichier à destination à déjà été supprimé, RollBack impossible\n-------------------\n");
 		}
 
         try {

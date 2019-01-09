@@ -11,6 +11,7 @@ import cgi.deliveryTrack.bean.Context;
 import cgi.deliveryTrack.bean.Response;
 import cgi.deliveryTrack.enumeration.ApiEnum;
 import cgi.deliveryTrack.enumeration.StatusEnum;
+import cgi.deliveryTrack.exception.DeliveryTrackException;
 import cgi.deliveryTrack.logs.LogFactory;
 import cgi.deliveryTrack.transfert.FileTransfert;
 import cgi.deliveryTrack.utils.ParamFactory;
@@ -79,8 +80,12 @@ public class Service {
 			delivery.cancelDelivery(actionToDelete);
 			// Suppression de l'action traitée
 			actionList.remove(actionList.size()-1);
-		} catch (Exception e) {
+		} catch (NullPointerException | IndexOutOfBoundsException e) {
 			cancelAction = new CancelAction("Aucune action enregistrée", ApiEnum.ERROR);
+			return cancelAction;
+		} catch (DeliveryTrackException e) {
+			cancelAction = new CancelAction (e.getMessage(), ApiEnum.ERROR);
+			actionList.remove(actionList.size()-1);
 			return cancelAction;
 		}
 		return cancelAction;

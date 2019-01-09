@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
+import cgi.deliveryTrack.bean.CancelAction;
 import cgi.deliveryTrack.bean.Context;
 import cgi.deliveryTrack.enumeration.ApiEnum;
 import cgi.deliveryTrack.service.Service;
@@ -46,11 +47,11 @@ public class App
         
         final JTextArea dndLivraison = new JTextArea();
         dndLivraison.setBorder(BorderFactory.createLineBorder(Color.black));
-        JTextArea dndValidation = new JTextArea();
+        final JTextArea dndValidation = new JTextArea();
         dndValidation.setBorder(BorderFactory.createLineBorder(Color.black));
-        JTextArea dndInvalidation = new JTextArea();
+        final JTextArea dndInvalidation = new JTextArea();
         dndInvalidation.setBorder(BorderFactory.createLineBorder(Color.black));
-        JTextArea dndArchivage = new JTextArea();
+        final JTextArea dndArchivage = new JTextArea();
         dndArchivage.setBorder(BorderFactory.createLineBorder(Color.black));
         
         // Scroll down automatically
@@ -153,7 +154,9 @@ public class App
         new FileDrop( System.out, dndValidation, /*dragBorder,*/ new FileDrop.Listener() {   
         	public void filesDropped( File[] files ) {   
         		for( int i = 0; i < files.length; i++ ) {
-
+	        		File file = files[i];
+	        		Context context = new Context(ApiEnum.VALIDATION, file);
+	        		dndValidation.append(service.fileTransfert(context));
                 }   // end for: through each dropped file
             }   // end filesDropped
         }); // end FileDrop.Listener
@@ -162,7 +165,9 @@ public class App
         new FileDrop( System.out, dndInvalidation, /*dragBorder,*/ new FileDrop.Listener() {   
         	public void filesDropped( File[] files ) {   
         		for( int i = 0; i < files.length; i++ ) {   
-
+	        		File file = files[i];
+	        		Context context = new Context(ApiEnum.INVALIDATION, file);
+	        		dndInvalidation.append(service.fileTransfert(context));
                 }   // end for: through each dropped file
             }   // end filesDropped
         }); // end FileDrop.Listener  
@@ -171,7 +176,9 @@ public class App
         new FileDrop( System.out, dndArchivage, /*dragBorder,*/ new FileDrop.Listener() {   
         	public void filesDropped( File[] files ) {   
         		for( int i = 0; i < files.length; i++ ) {   
-
+	        		File file = files[i];
+	        		Context context = new Context(ApiEnum.ARCHIVAGE, file);
+	        		dndArchivage.append(service.fileTransfert(context));
                 }   // end for: through each dropped file
             }   // end filesDropped
         }); // end FileDrop.Listener
@@ -180,6 +187,7 @@ public class App
             public void actionPerformed(ActionEvent evt) {
             	String livrer = JOptionPane.showInputDialog(frame,
                         "Où dois-je livrer ?", null);
+            	service.majPdc(ApiEnum.LIVRAISON, livrer);
             }
         });
         
@@ -187,6 +195,7 @@ public class App
         	public void actionPerformed(ActionEvent evt) {
         		String valider = JOptionPane.showInputDialog(frame,
         				"Où dois-je valider ?", null);
+        		service.majPdc(ApiEnum.VALIDATION, valider);
         	}
         });
         
@@ -194,6 +203,7 @@ public class App
         	public void actionPerformed(ActionEvent evt) {
         		String invalider = JOptionPane.showInputDialog(frame,
         				"Où dois-je invalider ?", null);
+        		service.majPdc(ApiEnum.INVALIDATION, invalider);
         	}
         });
         
@@ -201,6 +211,7 @@ public class App
         	public void actionPerformed(ActionEvent evt) {
         		String archiver = JOptionPane.showInputDialog(frame,
         				"Où dois-je archiver ?", null);
+        		service.majPdc(ApiEnum.ARCHIVAGE, archiver);
         	}
         });
         
@@ -208,18 +219,43 @@ public class App
         	public void actionPerformed(ActionEvent evt) {
         		String logs = JOptionPane.showInputDialog(frame,
         				"Où dois-je stocker les logs ?", null);
+        		service.majPdc(ApiEnum.LOGS, logs);
         	}
         });
         
         cancel.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
-
+        		CancelAction actionCanceled = service.cancelLastAction();
+        		switch (actionCanceled.getProvenance())
+        		{
+        		  case LIVRAISON:
+        			  dndLivraison.append(actionCanceled.getMessage());
+        		    break;        
+        		  case VALIDATION:
+        			  dndValidation.append(actionCanceled.getMessage());
+        			  break;        
+        		  case INVALIDATION:
+        			  dndInvalidation.append(actionCanceled.getMessage());
+        			  break;        
+        		  case ARCHIVAGE:
+        			  dndArchivage.append(actionCanceled.getMessage());
+        			  break;        
+        		  default:
+        			  JOptionPane.showMessageDialog(frame, actionCanceled.getMessage());             
+        		}
+        		
         	}
         });
+        
+
 
         frame.setSize(1200,400);
 //        frame.setBounds( 100, 100, 100, 100 );
         frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
         frame.setVisible(true);
+        
+        if (service.getParamLoadingError()) {
+        	JOptionPane.showMessageDialog(frame, "ATTENTION : Plan de classement par défault chargé."); 
+        }
     }   // end main
 }

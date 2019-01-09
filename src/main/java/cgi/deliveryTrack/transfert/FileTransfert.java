@@ -36,7 +36,7 @@ public class FileTransfert {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			response.setStatus(StatusEnum.ERROR);
-			response.setMessage("Fichier non trouvé");
+			response.setMessage("Fichier non trouvé\n--------------------\n");
 			return response;
 		}
 
@@ -50,7 +50,7 @@ public class FileTransfert {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			response.setStatus(StatusEnum.ERROR);
-			response.setMessage("Impossible de copier le fichier");
+			response.setMessage("Impossible de copier le fichier\n--------------------\n");
 			return response;
 		}
         
@@ -62,7 +62,7 @@ public class FileTransfert {
                 file.delete();
             } catch (Exception e) {
     			response.setStatus(StatusEnum.ERROR);
-    			response.setMessage("Impossible de supprimer le fichier");
+    			response.setMessage("Impossible de supprimer le fichier\n--------------------\n");
     			return response;
             }
         }
@@ -72,7 +72,37 @@ public class FileTransfert {
 	}
 	
     
-	
+	public void cancelDelivery(Action actionToDelete) {
+		File fileDest = new File(actionToDelete.getPathDest() + actionToDelete.getFileNewName());
+		File fileOrigin = new File(actionToDelete.getPathOrigin() + actionToDelete.getFileName());
+		
+	    try {
+			bis = new BufferedInputStream(new FileInputStream(fileDest));
+		    bos = new BufferedOutputStream(new FileOutputStream(fileOrigin));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        try {
+    	    while((longueur = bis.read(buf)) > 0){
+    	    	bos.write(buf, 0, longueur);
+    	    }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+     
+        try {
+			bis.close();
+            bos.close();
+            fileDest.delete();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 
 }

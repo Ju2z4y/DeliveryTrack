@@ -23,6 +23,26 @@ public class Action {
 		this.setPathDest(destination);
 		this.setFileNewName(fileNewName);
 	}
+	
+	public String message() {
+		String reponse = "Action : " + getAction().toString() + "\n";
+		reponse += "Fichier : " + getFileName() + "\n";
+		reponse += "Origine : " + getPathOrigin() + "\n";
+		reponse += "Destination : " + getPathDest() + "\n";
+		reponse += "Nouveau nom : " + getFileNewName() + "\n";
+		reponse += "-----------------------\n"; 
+		return reponse;
+	}
+	
+	public String messageTab() {
+		String reponse = "->Action : " + getAction().toString() + "\n";
+		reponse += "->Fichier : " + getFileName() + "\n";
+		reponse += "->Origine : " + getPathOrigin() + "\n";
+		reponse += "->Destination : " + getPathDest() + "\n";
+		reponse += "->Nouveau nom : " + getFileNewName() + "\n";
+		reponse += "-----------------------\n"; 
+		return reponse;
+	}
 
 	public ApiEnum getAction() {
 		return action;
@@ -78,6 +98,12 @@ public class Action {
 
 	public void setFileNewName(String fileNewName) {
 		this.fileNewName = fileNewName;
+	}
+
+	public String deleteMessage() {
+		String reponse = "Annulation de l'action\n";
+		reponse += this.messageTab();
+		return reponse;
 	}
 	
 

@@ -5,7 +5,9 @@ public enum ApiEnum {
 	LIVRAISON("Livraison"),
 	VALIDATION("Validation"),
 	INVALIDATION("Invalidation"),
-	ARCHIVAGE("Archivage");
+	ARCHIVAGE("Archivage"),
+	LOGS("Logs"),
+	ERROR("Error");
 	
 	private String provenance = "";
 	

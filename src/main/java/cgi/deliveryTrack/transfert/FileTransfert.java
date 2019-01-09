@@ -1,4 +1,5 @@
 package cgi.deliveryTrack.transfert;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cgi.deliveryTrack.bean.Action;
-import cgi.deliveryTrack.bean.Context;
 import cgi.deliveryTrack.bean.Response;
 import cgi.deliveryTrack.enumeration.ApiEnum;
 import cgi.deliveryTrack.enumeration.StatusEnum;

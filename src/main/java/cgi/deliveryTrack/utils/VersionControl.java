@@ -4,7 +4,6 @@ import java.io.File;
 
 import cgi.deliveryTrack.bean.Context;
 import cgi.deliveryTrack.bean.Response;
-import cgi.deliveryTrack.enumeration.ApiEnum;
 import cgi.deliveryTrack.enumeration.StatusEnum;
 import cgi.deliveryTrack.exception.DeliveryTrackException;
 

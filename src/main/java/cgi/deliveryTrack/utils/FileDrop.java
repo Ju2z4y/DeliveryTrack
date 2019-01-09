@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class makes it easy to drag and drop files from the operating
@@ -312,10 +314,9 @@ public class FileDrop
                             log( out, "FileDrop: file list accepted." );
 
                             // Get a useful list
-                            java.util.List fileList = (java.util.List) 
+                            @SuppressWarnings("unchecked")
+							java.util.List<File> fileList = (java.util.List<File>) 
                                 tr.getTransferData(java.awt.datatransfer.DataFlavor.javaFileListFlavor);
-                            java.util.Iterator iterator = fileList.iterator();
-
                             // Convert list to array
                             java.io.File[] filesTemp = new java.io.File[ fileList.size() ];
                             fileList.toArray( filesTemp );
@@ -424,7 +425,7 @@ public class FileDrop
         {   
             boolean support = false;
             try
-            {   Class arbitraryDndClass = Class.forName( "java.awt.dnd.DnDConstants" );
+            {   
                 support = true;
             }   // end try
             catch( Exception e )
@@ -441,7 +442,7 @@ public class FileDrop
      private static File[] createFileArray(BufferedReader bReader, PrintStream out)
      {
         try { 
-            java.util.List list = new java.util.ArrayList();
+            List<File> list = new ArrayList<File>();
             java.lang.String line = null;
             while ((line = bReader.readLine()) != null) {
                 try {
@@ -647,6 +648,7 @@ public class FileDrop
      * @version 1.2
      */
     public static class Event extends java.util.EventObject {
+    	private static final long serialVersionUID = 1L;
 
         private java.io.File[] files;
 
@@ -801,7 +803,7 @@ public class FileDrop
          * @param fetcher The {@link Fetcher} that will return the data object
          * @since 1.1
          */
-        public TransferableObject( Class dataClass, Fetcher fetcher )
+        public TransferableObject( Class<?> dataClass, Fetcher fetcher )
         {   this.fetcher = fetcher;
             this.customFlavor = new java.awt.datatransfer.DataFlavor( dataClass, MIME_TYPE );
         }   // end constructor

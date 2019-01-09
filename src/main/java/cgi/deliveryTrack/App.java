@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -251,7 +250,7 @@ public class App
 
         frame.setSize(1200,400);
 //        frame.setBounds( 100, 100, 100, 100 );
-        frame.setDefaultCloseOperation( frame.EXIT_ON_CLOSE );
+        frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         frame.setVisible(true);
         
         if (service.getParamLoadingError()) {

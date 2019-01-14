@@ -113,5 +113,12 @@ public class Service {
 		paramFactory.saveParam(planDeClassement);
 		
 	}
+	
+	public void test(Context context) {
+		String destination = getDestination(context);
+		Action action = new Action(context, destination);
+		System.out.println(action);
+		action.parseFileName(context.getFile().getName());
+	}
 
 }

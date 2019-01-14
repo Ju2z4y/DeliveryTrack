@@ -144,7 +144,11 @@ public class App
 	        	for( int i = 0; i < files.length; i++ ) {   
 	        		File file = files[i];
 	        		Context context = new Context(ApiEnum.LIVRAISON, file);
-	        		dndLivraison.append(service.fileTransfert(context));
+	        		service.test(context);
+	        		
+	        		
+	        		
+//	        		dndLivraison.append(service.fileTransfert(context));
             	}   // end for: through each dropped file
         	}   // end filesDropped
         }); // end FileDrop.Listener
